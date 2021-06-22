@@ -1,0 +1,98 @@
+@import url('https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,800;0,900;1,100;1,200;1,800;1,900&display=swap');
+
+body{
+  font-family: 'Poppins', sans-serif;
+  background-color: #fafafa;
+  min-height: 100vh;
+  padding: 1rem;
+}
+:root{
+  --main-color: #ff4d4f;
+}
+a{
+  color: black;
+}
+main{
+  min-height: 75vh;
+  display: flex;
+  justify-content: center;
+  flex-direction: column;
+  
+}
+header{
+  padding: 1rem 0;
+}
+footer{
+  text-align: center;
+  padding: 1rem;
+  margin-bottom: 1rem;
+}
+
+
+#btn {
+  background-color: var(--main-color);
+  border: none;
+  color: white;
+  font-weight: bold;
+  transition: all .3s;
+}
+
+#btn:hover{
+  background-color: black;
+}
+
+
+/* Pagination button */
+.ant-pagination-item-active a{
+  color: white;
+}
+.ant-pagination-item-active a:hover{
+  color: white !important;
+}
+.ant-pagination-item-active{
+  background-color: #434343;
+  border: none;
+}
+
+
+/* Custom-box */
+.custom-box{
+  padding: 2rem;
+  border:1px solid #f3f4f5 ;
+  border-radius:0.4rem ;
+  box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1),0 10px 10px -5px rgba(0, 0, 0, 0.04);
+}
+.product-item{
+  border:1px solid #E2E8F0 ;
+  border-radius:0.4rem ;
+  box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1),0 10px 10px -5px rgba(0, 0, 0, 0.04);
+}
+
+
+/* Form */
+.ant-form-item-label > label{
+  width: 160px;
+  font-weight: bold;
+}
+
+/* StepNav (check out) */
+.ant-steps-item-finish .ant-steps-item-icon {
+  border-color: var(--main-color);
+}
+
+.ant-steps-item-process > .ant-steps-item-container > .ant-steps-item-icon {
+  background: var(--main-color);
+}
+.ant-steps-item-process .ant-steps-item-icon {
+  background-color: #fff;
+  border-color: var(--main-color);
+}
+.ant-steps-item-finish .ant-steps-item-icon > .ant-steps-icon {
+  color: var(--main-color);
+}
+.ant-steps-item-finish > .ant-steps-item-container > .ant-steps-item-content > .ant-steps-item-title::after {
+  background-color: var(--main-color);
+}
+.ant-steps-item-finish > .ant-steps-item-container > .ant-steps-item-tail::after {
+  background-color: var(--main-color);
+}
