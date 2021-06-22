@@ -6,6 +6,7 @@ dbConnect();
 
 // Import modules
 const express = require('express');
+const path = require("path")
 const cors = require("cors");
 const session = require("express-session");
 const MongoStore = require("connect-mongo");
@@ -19,6 +20,7 @@ const authRoute = require("./routes/authRoute")
 const productRoute = require("./routes/productRoute")
 const reviewRoute = require("./routes/reviewRoute");
 const cartRoute = require("./routes/cartRoute");
+const orderRoute = require("./routes/orderRoute");
 
 // Initialize App
 const app = express();
@@ -52,6 +54,7 @@ app.use("/api/v1/auth", authRoute)
 app.use("/api/v1/products", productRoute)
 app.use("/api/v1/reviews", reviewRoute);
 app.use("/api/v1/cart", session(sess), cartRoute);
+app.use("/api/v1/orders", orderRoute);
 
 // Error Handling
 app.use(ErrorHandler);
