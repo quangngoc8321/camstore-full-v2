@@ -30,7 +30,7 @@ const App = () => {
       <Header />
       <Divider />
       <main>
-      <Suspense fallback={<div>Loading...</div>}>
+      <Suspense fallback={<div></div>}>
         <Switch>
           <Route exact path="/">
             <ProductContainer />
