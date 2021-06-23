@@ -1,9 +1,16 @@
 import React from "react";
 import { Row, Col, Typography, Button, Form, Input } from "antd";
 import CheckOutStep from "./CheckOutStep";
+import { useHistory } from "react-router";
 const { Title } = Typography;
 
 const Shipping = () => {
+  let history = useHistory();
+  const shippingDetails = JSON.parse(localStorage.getItem("shippingDetails"))
+  const onFinish = (values) => {
+    localStorage.setItem('shippingDetails', JSON.stringify(values));
+    history.push("/payment-method")
+  }
   return (
     <div>
       <Row justify="center">
@@ -13,10 +20,11 @@ const Shipping = () => {
           <Form
             size="large"
             name="shipping"
+            onFinish={onFinish}
             initialValues={{
-              name: "",
-              email: "",
-              address: "",
+              name: shippingDetails?.name || "",
+              email: shippingDetails?.email || "",
+              address: shippingDetails?.address || "",
             }}
           >
             <Form.Item
@@ -69,7 +77,7 @@ const Shipping = () => {
                 }}
               >
                 <Button id="btn" htmlType="submit">
-                  Continue &rarr;
+                Save & Continue &rarr;
                 </Button>
               </div>
             </Form.Item>

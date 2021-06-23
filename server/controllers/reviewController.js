@@ -12,7 +12,7 @@ exports.getAllReviews = async (req, res, next) => {
     const skip = (pageNumber - 1) * pageSize;
     const sort = { createdAt: -1 };
 
-    const reviews = await Review.find({productId}).populate("user", "_id name").skip(skip).limit(pageSize).sort(sort);
+    const reviews = await Review.find({productId}).populate("user", "_id name avatar").skip(skip).limit(pageSize).sort(sort);
     res.status(200).json({
       success: true,
       total,

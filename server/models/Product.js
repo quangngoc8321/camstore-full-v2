@@ -9,6 +9,13 @@ const productSchema = new mongoose.Schema(
       lowercase: true,
       maxLength: [200, "Name max-length is 260 characters"],
     },
+    slug: {
+      type: String,
+      trim: true,
+      required: true,
+      lowercase: true,
+      unique: true,
+    },
     image: {
       public_id: {
         type: String,

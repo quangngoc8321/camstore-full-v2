@@ -1,9 +1,11 @@
-import React from "react";
-import { UserOutlined, SolutionOutlined } from "@ant-design/icons";
+import React, { useContext } from "react";
+import { UserOutlined, SolutionOutlined,PoweroffOutlined } from "@ant-design/icons";
 import { Menu, Dropdown } from "antd";
 import { Avatar } from "antd";
 import { Link } from "react-router-dom";
-const UserNav = () => {
+import { AuthContext } from "../context/AuthContextProvider";
+const UserNav = ({user}) => {
+  const {signOut} = useContext(AuthContext);
   const menu = (
     <Menu>
       <Menu.Item key="1">
@@ -21,9 +23,9 @@ const UserNav = () => {
         </Link>
       </Menu.Item>
       <Menu.Item key="3">
-        <strong>
-          <SolutionOutlined /> Log Out
-        </strong>
+      <strong onClick={signOut}>
+          <PoweroffOutlined /> Log Out
+          </strong>
       </Menu.Item>
     </Menu>
   );
@@ -32,7 +34,7 @@ const UserNav = () => {
       overlay={menu}
     >
       <Avatar
-        src="https://lh3.googleusercontent.com/ogw/ADea4I4JEjM3mC6ibl3RQozMexPs1W8u2AKBrV6mgtwXmA=s32-c-mo"
+        src={user.avatar.url}
       />
     </Dropdown>
   );

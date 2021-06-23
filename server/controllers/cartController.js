@@ -5,7 +5,9 @@ const CartItem = require("../models/CartItem");
 // GET ALL
 exports.getAllCartItems = async (req, res, next) => {
   try {
+
     const { id: sessionId } = req.session;
+     const {  pageNumber = 1 } = req.query;
 
     const caculateTotal = await CartItem.aggregate([
       { $match: { sessionId } },
@@ -26,16 +28,23 @@ exports.getAllCartItems = async (req, res, next) => {
       totalPrice = caculateTotal[0].totalPrice
     }
 
+    const pageSize = 4;
+    const skip = (pageNumber - 1) * pageSize;
     const sort = { createdAt: -1 };
+    const total = await CartItem.countDocuments({ sessionId });
 
-    const cartItems = await CartItem.find({ sessionId })
-      .populate("productId")
-      .sort(sort);
+    const cartItems = await CartItem.find({ sessionId }).populate("product")
+    .skip(skip)
+    .limit(pageSize)
+    .sort(sort);
+
     res.status(200).json({
       success: true,
       cartItems,
       totalItems,
       totalPrice,
+      total,
+      pageSize
     });
   } catch (error) {
     console.log(error);

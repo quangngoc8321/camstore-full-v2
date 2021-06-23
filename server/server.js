@@ -46,7 +46,7 @@ const sess = {
       collectionName: "sessions",
     }),
     saveUninitialized: true,
-    cookie: {secure: false},
+    cookie: {},
 };
 
 // Routes

@@ -16,12 +16,14 @@ function getBase64(file) {
   });
 }
 
-const ProductForm = ({ type = "Create Product" }) => {
+const ProductForm = ({ type = "Create Product", product = null, mutation, loading, setLoading }) => {
   const [state, setState] = useState({
     previewVisible: false,
     previewImage: "",
     previewTitle: "Preview",
-    fileList: [],
+    fileList: product
+    ? [{ uid: product.image.public_id, url: product.image.url }]
+    : [],
   });
 
 
@@ -43,6 +45,21 @@ const ProductForm = ({ type = "Create Product" }) => {
       <div style={{ marginTop: 8 }}>Upload</div>
     </div>
   );
+
+    const onFinish = async (values) => {
+      setLoading(true);
+    if (product) {
+      values.newImage =
+        state.fileList[0].originFileObj &&
+        (await getBase64(state.fileList[0].originFileObj));
+      values.image = product.image;
+    } else {
+      values.image = await getBase64(state.fileList[0].originFileObj);
+    }
+
+    console.log(values);
+    mutation.mutate(values);
+  };
   return (
     <Row justify="center" align="middle">
       <Col xs={24} xl={12} className="custom-box">
@@ -56,7 +73,16 @@ const ProductForm = ({ type = "Create Product" }) => {
             <Title style={{ textAlign: "center" }} level={2}>
               {type}
             </Title>
-            <Form size="large" name="product-form" initialValues={{}}>
+            <Form size="large" name="product-form" 
+            initialValues={{
+                name: product?.name || "this is product name 1",
+                price: Number(product?.price) || 1000,
+                description: product?.description || "this is description",
+                image: "_",
+              }}
+              
+              onFinish={onFinish}
+              >
               <Form.Item
                 label="Name"
                 name="name"
@@ -149,7 +175,7 @@ const ProductForm = ({ type = "Create Product" }) => {
                     justifyContent: "center",
                   }}
                 >
-                  <Button id="btn" htmlType="submit">
+                  <Button id="btn" htmlType="submit" loading={loading}>
                     {type}
                   </Button>
                 </div>

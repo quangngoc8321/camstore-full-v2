@@ -1,11 +1,47 @@
-import React from "react";
-import { List, Space} from "antd";
+import React, { useContext } from "react";
+import { Button, List, Space} from "antd";
 import { Link } from "react-router-dom";
 import { Select } from "antd";
+import { useMutation, useQueryClient } from "react-query";
+import { CartContext } from "../context/CartContextProvider";
+import { MyQueryContext } from "../context/MyQueryContextProvider";
+import { axiosFunction } from "../../helpers/axiosFunction";
+import { notificationError } from "../../helpers/notificationError";
 const { Option } = Select;
 
 const CartList = () => {
-  const cartItems = [{}, {}, {}];
+  const {query, setQuery} = useContext(MyQueryContext);
+  const queryClient = useQueryClient();
+  const { isLoading, data } = useContext(CartContext);
+
+
+
+  const cartItems = data ? data.data.cartItems : [];
+
+
+
+  const mutationRemoveCart = useMutation(
+    (data) => axiosFunction(null,data, "/cart","delete"),
+    {
+      onSuccess: (data) => {
+        queryClient.invalidateQueries("cart");
+      },
+      onError: (error) => {
+        notificationError(error);
+      },
+    }
+  );
+  const mutationUpdateCart = useMutation(
+    (data) => axiosFunction(null,data, "/cart","put"),
+    {
+      onSuccess: (data) => {
+        queryClient.invalidateQueries("cart");
+      },
+      onError: (error) => {
+        notificationError(error);
+      },
+    }
+  );
   return (
     <List
       grid={{
@@ -15,11 +51,17 @@ const CartList = () => {
         md: 1,
       }}
       itemLayout="horizontal"
+      loading={isLoading}
       dataSource={cartItems}
-      pagination={{
-          pageSize: 4,
-          total: 8,
-      }}
+      pagination={cartItems.length > 0 && {
+        pageSize: data?.data.pageSize || 0,
+        total: data?.data.total || 0,
+        current: query.pageNumber,
+        onChange: (pageNumber) => {
+          setQuery({ ...query, pageNumber });
+          
+        },
+    }}
       renderItem={(item) => (
         <List.Item>
           <Space
@@ -31,26 +73,38 @@ const CartList = () => {
             }}
           >
             <div>
-              <Link to={`/products/abc`}>
+              <Link to={`/products/${item.product.slug}`}>
                 <img
-                  src="https://res.cloudinary.com/dkalgpanl/image/upload/v1624252412/cameraStore/product/wcpctfq4piqwgqqcarvx.jpg"
+                  src={item.product.image.url}
                   alt="cart"
                   width="100"
                 />
                 <br />
               </Link>
-              <Link to={`/products/abc`} style={{ textTransform: "uppercase", color:"black" }}>
-                <strong>RICOHFLEX MILLION TLR 22 ($1000)</strong>
+              <Link to={`/products/${item.product.slug}`} style={{ textTransform: "uppercase", color:"black" }}>
+                <strong>{item.product.name} (${item.product.price})</strong>
               </Link>
             </div>
             <div>
               <p>Quantity</p>
-              <Select value={1} style={{ width: 120, margin: "0 5px 10px 0" }}>
+              <Select value={item.quantity} style={{ width: 120, margin: "0 5px 10px 0" }}
+              onChange={(value) =>
+                mutationUpdateCart.mutate({
+                  price: item.product.price,
+                  productId: item.product._id,
+                  quantity: value,
+                })
+              }
+              >
                 <Option value="1">1</Option>
                 <Option value="2">2</Option>
                 <Option value="3">3</Option>
               </Select>
-              <strong style={{borderRadius:"2px",padding: ".4rem .5rem",cursor:"pointer", background:"#d9d9d9"}}>Remove</strong>
+              <Button onClick={() =>
+                        mutationRemoveCart.mutate({
+                          productId: item.product._id,
+                        })
+                      }>Remove</Button>
             </div>
           </Space>
         </List.Item>

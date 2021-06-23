@@ -10,5 +10,4 @@ const {
 const Router = express.Router();
 
 Router.route("/").get(getAllCartItems).post( createCartItem).put(updateCartItem).delete(deleteCartItem);
-
 module.exports = Router;

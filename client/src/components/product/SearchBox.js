@@ -3,7 +3,7 @@ import { Input, Typography, Button, Divider, Row, Col } from "antd";
 const { Title } = Typography;
 const { Search } = Input;
 
-const SearchBox = () => {
+const SearchBox = ({query, setQuery}) => {
   return (
     <Row justify="center" align="middle">
       <Col xs={24} xl={18}>
@@ -15,6 +15,7 @@ const SearchBox = () => {
           placeholder="Search Product..."
           enterButton={<Button id="btn">Search</Button>}
           size="large"
+          onChange={(e) => setQuery({ ...query, search: e.target.value })}
         />
       </Col>
       <Divider />

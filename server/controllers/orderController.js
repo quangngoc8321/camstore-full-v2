@@ -11,21 +11,21 @@ exports.getMyOrders =  async (req,res) => {
         const skip = (pageNumber - 1) * pageSize;
         const sort =  { createdAt: -1 };
 
-        const orders =  await Order.find({uid})
+        const myOrders =  await Order.find({uid})
         .skip(skip)
         .limit(pageSize)
         .sort(sort);;
         res.status(200).json({
             success: true,
             total,
-            orders,
+            myOrders,
             pageSize
         })
     } catch (error) {
         console.log(error);
     }
 }
-    exports.getCustomerOrders =  async (req,res) => {
+exports.getCustomerOrders =  async (req,res) => {
         try {
             const {pageNumber = 1} = req.query;
             const total = await Order.countDocuments({isPaid: true});
@@ -33,7 +33,7 @@ exports.getMyOrders =  async (req,res) => {
             const skip = (pageNumber - 1) * pageSize;
             const sort =  { createdAt: -1 };
 
-            const orders = await Order.find({isPaid: true})
+            const customerOrders = await Order.find({isPaid: true})
             .skip(skip)
             .limit(pageSize)
             .sort(sort);
@@ -41,7 +41,7 @@ exports.getMyOrders =  async (req,res) => {
             res.status(200).json({
                 success: true,
                 total,
-                orders,
+                customerOrders,
                 pageSize,
             });
            
@@ -70,6 +70,7 @@ exports.getMyOrders =  async (req,res) => {
                     };
                 });
                 req.line_items = line_items;
+                req.customer_email = shippingDetails.email;
                 req.metadata = {order_id: `${order._id}`};
                 next()
         } catch (error) {
@@ -78,8 +79,9 @@ exports.getMyOrders =  async (req,res) => {
     }
     exports.createCheckOutSession =  async (req,res,next) => {
         try {
-            const {metadata, line_items} = req;
+            const {metadata, line_items, customer_email} = req;
             const session = await stripe.checkout.sessions.create({
+                customer_email,
                 payment_method_types: ["card"],
                 metadata,
                 line_items,
@@ -92,18 +94,18 @@ exports.getMyOrders =  async (req,res) => {
             console.log(error);
         }
     }
-    exports.getOrder =  async () => {
+    exports.getOrder =  async (req,res,next) => {
         try {
             const {orderId} = req.body
             const {_id:uid} = req.user;
-            const order = Order.findOne({uid, _id: orderId});
+            const order = await Order.findOne({uid, _id: orderId});
             if(!order) {
                 return res.status(400).json({
                     success: false,
                     message: "Unauthorized"
                 })
             }
-            const {orderItems} = order;
+            const {orderItems, shippingDetails} = order;
             const line_items = orderItems.map((item) => {
                 return {
                     price_data: {
@@ -119,13 +121,14 @@ exports.getMyOrders =  async (req,res) => {
                 });
                 req.line_items = line_items;
                 req.metadata = {order_id: `${order._id}`};
+                req.customer_email = shippingDetails.email;
                 next()
         } catch (error) {
             console.log(error);
         }
     }
 
-    exports.updateOrder =  async () => {
+    exports.updateOrder =  async (req,res,next) => {
         try {
             const sig = req.headers["stripe-signature"];
             let event = stripe.webhooks.constructEvent(

@@ -1,21 +1,19 @@
 import React from "react";
-import { Row, Rate, Col,Button, Typography, Divider } from "antd";
+import { Row, Rate, Col,Typography, Divider,Spin } from "antd";
 import { Breadcrumb } from 'antd';
 import ReviewContainer from "../review/ReviewContainer";
-import { Link } from "react-router-dom";
-
-
+import { Link, useParams } from "react-router-dom";
+import { useQuery } from "react-query";
+import { axiosFunction } from "../../helpers/axiosFunction";
+import AddToCartBtn from "../cart/AddToCartBtn"
 const { Title } = Typography;
 const ProductDetail = () => {
-  const product = {
-    slug: "abc",
-    price: 1000,
-    name: "RICOHFLEX MILLION TLR 22",
-    description: "Lorem ipsum dolor, sit amet consectetur adipisicing elit. Iste nemo vitae assumenda impedit, est porro dolor vel molestiae ea dolore quis accusamus debitis quibusdam repellat repellendus excepturi, nostrum facilis beatae?",
-    image: "https://res.cloudinary.com/dkalgpanl/image/upload/v1624252412/cameraStore/product/wcpctfq4piqwgqqcarvx.jpg",
-    totalReviews: 5,
-    ratingAvg: 4.5
-}
+  let {slug} = useParams();
+  const { isLoading, data } = useQuery(["product", slug], ()=> axiosFunction(null,null,`/products/${slug}`,"get"))
+    if(isLoading){
+        return <Spin size="large" />;
+    }
+  const product = data.data.product
 
   return (
     <>  
@@ -38,7 +36,7 @@ const ProductDetail = () => {
               xl={9}>
                   <div>
         <img
-          src={product.image}
+          src={product.image.url}
           alt="product detail"
           style={{ maxWidth: "100%", height: "auto", marginBottom:'1rem' }}
           
@@ -70,13 +68,11 @@ const ProductDetail = () => {
           veritatis? Odit aut voluptas dolores aliquam facere modi incidunt
           temporibus adipisci reiciendis?
         </p>
-        <Button id="btn">
-          Add To Cart
-        </Button>
+        <AddToCartBtn product={product} />
       </Col>
     </Row>
     <Row justify="space-between" align="top" style={{borderTop:"1px solid #eee", padding: "1rem 0"}}>
-        <ReviewContainer />
+        <ReviewContainer productId = {product._id} />
     </Row>
       </div>
   

@@ -2,11 +2,11 @@ import React from 'react'
 import ReviewForm from './ReviewForm'
 import ReviewList from './ReviewList'
 
-const ReviewContainer = () => {
+const ReviewContainer = ({productId}) => {
     return (
         <>
-            <ReviewList />
-            <ReviewForm />
+            <ReviewList productId={productId} />
+            <ReviewForm productId={productId} />
         </>
     )
 }

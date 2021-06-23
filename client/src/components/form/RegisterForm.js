@@ -1,11 +1,16 @@
-import React, {  useState } from "react";
+import React, {  useContext, useState } from "react";
 import { Row, Col, Form, Input, Button, Typography} from "antd";
 import { Upload} from "antd";
 
 import ImgCrop from 'antd-img-crop';
-import { Link } from "react-router-dom";
-const { Title } = Typography;
+import { Link, useLocation } from "react-router-dom";
 
+import { AuthContext } from "../context/AuthContextProvider";
+
+const { Title } = Typography;
+function useQuery() {
+  return new URLSearchParams(useLocation().search);
+}
 function getBase64(file) {
   return new Promise((resolve, reject) => {
     const reader = new FileReader();
@@ -15,9 +20,16 @@ function getBase64(file) {
   });
 }
 const RegisterForm = () => {
+  let query = useQuery();
+  let redirect = query.get("redirect")
+
  
+  const {register, loading} = useContext(AuthContext);
+
   const [fileList, setFileList] = useState([]);
+
   const [file, setFile] = useState(null);
+
   const onChange = ({ fileList: newFileList }) => {
     if(newFileList.length > 0){
       newFileList[0].originFileObj = file
@@ -33,6 +45,11 @@ const RegisterForm = () => {
     imgWindow.document.write(image.outerHTML);
   };
 
+  const onFinish = async (values) => {
+     
+      values.avatar = await getBase64(file);
+      register(values, redirect);
+  }
   return (
     <Row justify="center" align="middle">
       <Col xs={24} xl={12} className="custom-box">
@@ -41,7 +58,9 @@ const RegisterForm = () => {
             <Title style={{ textAlign: "center" }} level={2}>
               Register
             </Title>
-            <Form size="large" name="basic" initialValues={{ image: "_" }}>
+            <Form size="large" name="basic" initialValues={{ avatar: "_" }}
+              onFinish={onFinish}
+            >
               <Form.Item
                 label="Username"
                 name="name"
@@ -108,7 +127,7 @@ const RegisterForm = () => {
               </Form.Item>
               <Form.Item
                 label="Avatar"
-                name="image"
+                name="avatar"
                 rules={[
                   {
                     required: true,
@@ -140,7 +159,7 @@ const RegisterForm = () => {
                     justifyContent: "center",
                   }}
                 >
-                  <Button id="btn" htmlType="submit">
+                  <Button id="btn" htmlType="submit" loading={loading}>
                     Register
                   </Button>
                 </div>

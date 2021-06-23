@@ -1,10 +1,17 @@
-import React from "react";
+import React, { useContext } from "react";
 import { Row, Col, Form, Input, Button, Typography } from "antd";
-import { Link } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
+import { AuthContext } from "../context/AuthContextProvider";
 
 const { Title } = Typography;
-
+function useQuery() {
+  return new URLSearchParams(useLocation().search);
+}
 const LoginForm = () => {
+  let query = useQuery();
+  let redirect = query.get("redirect")
+
+  const {login, loading} = useContext(AuthContext)
   return (
     <Row justify="center">
       <Col xs={24} xl={12} md={24} className="custom-box">
@@ -13,7 +20,7 @@ const LoginForm = () => {
             <Title style={{ textAlign: "center" }} level={2}>
               Sign In
             </Title>
-            <Form size="large" name="sign-in" initialValues={{}}>
+            <Form size="large" name="sign-in" onFinish={(values)=> login(values,redirect)}>
               <Form.Item
                 name="email"
                 label="E-mail"
@@ -48,7 +55,7 @@ const LoginForm = () => {
                     justifyContent: "center",
                   }}
                 >
-                  <Button id="btn" htmlType="submit">
+                  <Button id="btn" htmlType="submit" loading={loading}>
                     Sign In
                   </Button>
                 </div>

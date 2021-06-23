@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useContext } from "react";
 import {
   PoweroffOutlined,
   BarsOutlined,
@@ -7,8 +7,10 @@ import {
 } from "@ant-design/icons";
 import { Menu, Dropdown, Avatar } from "antd";
 import { Link } from "react-router-dom";
+import { AuthContext } from "../context/AuthContextProvider";
 
-const AdminNav = () => {
+const AdminNav = ({user}) => {
+  const {signOut} = useContext(AuthContext);
   const menu = (
     <Menu>
       <Menu.Item key="1">
@@ -33,16 +35,16 @@ const AdminNav = () => {
         </Link>
       </Menu.Item>
       <Menu.Item key="4">
-        <strong>
+      <strong onClick={signOut}>
           <PoweroffOutlined /> Log Out
-        </strong>
+          </strong>
       </Menu.Item>
     </Menu>
   );
   return (
     <Dropdown overlay={menu}>
       <Avatar
-        src="https://lh3.googleusercontent.com/ogw/ADea4I4JEjM3mC6ibl3RQozMexPs1W8u2AKBrV6mgtwXmA=s32-c-mo"
+      src={user.avatar.url}
       />
     </Dropdown>
   );
