@@ -12,7 +12,7 @@ const Profile = () => {
           <Title level={3}>Profile</Title>
           <Avatar
             size="large"
-            src="https://lh3.googleusercontent.com/ogw/ADea4I4JEjM3mC6ibl3RQozMexPs1W8u2AKBrV6mgtwXmA=s32-c-mo"
+            src={user.avatar.url}
           />
           <p>Name: {user.name}</p>
           <p>Email: {user.email}</p>
