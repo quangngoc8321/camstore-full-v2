@@ -15,7 +15,7 @@ const Header = () => {
   return (
     <header>
       <Row gutter={{ sm: 16, md: 24, lg: 32 }} align="middle">
-        <Col className="gutter-row" xl={17} xs={6}>
+        <Col xl={17} xs={6}>
           <Link to="/">
             <Title
               level={4}
@@ -25,7 +25,7 @@ const Header = () => {
             </Title>
           </Link>
         </Col>
-        <Col className="gutter-row" xl={7} xs={18}>
+        <Col xl={7} xs={18}>
           <Row justify="space-between" align="middle">
             <Col
               xs={12}
