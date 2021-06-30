@@ -86,8 +86,8 @@ exports.getCustomerOrders =  async (req,res) => {
                 metadata,
                 line_items,
                 mode: "payment",
-                success_url: "https://camstorev2.herokuapp.com/my-orders",
-                cancel_url: "https://camstorev2.herokuapp.com/my-orders",
+                success_url: "https://onlinecamstore.herokuapp.com/my-orders",
+                cancel_url: "https://onlinecamstore.herokuapp.com/my-orders",
               });
               res.json({ id: session.id });
         } catch (error) {
