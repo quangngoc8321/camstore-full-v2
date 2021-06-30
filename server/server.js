@@ -25,7 +25,7 @@ const orderRoute = require("./routes/orderRoute");
 const app = express();
 
 // Middlwares
-app.use(cors({ origin: "https://camstorev2.herokuapp.com/" }));
+app.use(cors({ origin: "https://onlinecamstore.herokuapp.com/" }));
 app.use((req, res, next) => {
   if (req.originalUrl === "/api/v1/orders/webhook") {
     next();
