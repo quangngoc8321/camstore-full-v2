@@ -23,7 +23,6 @@ const RegisterForm = () => {
   let query = useQuery();
   let redirect = query.get("redirect")
 
- 
   const {register, loading} = useContext(AuthContext);
 
   const [fileList, setFileList] = useState([]);
@@ -46,8 +45,7 @@ const RegisterForm = () => {
   };
 
   const onFinish = async (values) => {
-     
-      values.avatar = await getBase64(file);
+      values.avatar = file && await getBase64(file);
       register(values, redirect);
   }
   return (

@@ -6,6 +6,7 @@ import { Link, useParams } from "react-router-dom";
 import { useQuery } from "react-query";
 import { axiosFunction } from "../../helpers/axiosFunction";
 import AddToCartBtn from "../cart/AddToCartBtn"
+import RelatedProducts from "./RelatedProducts";
 const { Title } = Typography;
 const ProductDetail = () => {
   let {slug} = useParams();
@@ -70,6 +71,9 @@ const ProductDetail = () => {
         </p>
         <AddToCartBtn product={product} />
       </Col>
+    </Row>
+    <Row justify="space-between" align="top" style={{borderTop:"1px solid #eee", padding: "1rem 0"}}>
+        <RelatedProducts />
     </Row>
     <Row justify="space-between" align="top" style={{borderTop:"1px solid #eee", padding: "1rem 0"}}>
         <ReviewContainer productId = {product._id} />

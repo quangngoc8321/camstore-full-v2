@@ -111,3 +111,23 @@ exports.deleteOneProduct = async (req, res,next) => {
     next(error)
   }
 };
+
+
+exports.getAllRelatedProducts = async (req, res,next) => {
+  try {
+    const {slug} = req.query;
+    const pageSize = 6;
+    
+    const sort = { createdAt: -1 };
+
+    const products = await Product.find({slug:{$ne: slug}})
+      .limit(pageSize)
+      .sort(sort);
+    res.status(200).json({
+      success: true,
+      products,
+    });
+  } catch (error) {
+    console.log(error);
+  }
+};

@@ -7,8 +7,11 @@ const AdminRoute = ({children}) => {
     let history = useHistory()
     useEffect(() => {
       if(isAuthStateReady){
-          if(!user || user.role === "USER") {
+          if(!user) {
             history.push("/login")
+          }
+          if(user && user.role === "USER"){
+            history.push("/")
           }
       } 
     }, [isAuthStateReady, user,history])

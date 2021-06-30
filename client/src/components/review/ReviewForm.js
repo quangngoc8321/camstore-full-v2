@@ -52,7 +52,7 @@ const ReviewForm = ({ productId }) => {
       <Space direction="vertical" style={{ width: "100%" }}>
         <Title level={4}>Write your review</Title>
         <div>
-          Select Rating Point:{" "}
+          Rating Point:{" "}
           <Rate
             allowHalf
             value={values.ratingPoint}

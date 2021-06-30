@@ -22,6 +22,7 @@ const AuthContextProvider = ({children}) => {
             const {user, token} = data
             localStorage.setItem("token",token)
             setState({...state, user})
+            setLoading(false);
             if(redirect){
                 history.push(`/${redirect}`)
             }else {
@@ -52,6 +53,7 @@ const AuthContextProvider = ({children}) => {
             const {user, token} = data
             localStorage.setItem("token",token)
             setState({...state, user})
+            setLoading(false);
             if(redirect){
                 history.push(`/${redirect}`)
             }else {

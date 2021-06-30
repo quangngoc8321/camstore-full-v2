@@ -4,7 +4,7 @@ import { Avatar, Typography, Space, List } from "antd";
 
 const { Title } = Typography;
 const CustomerOrdersListItem = ({item}) => {
-  const {shippingDetails, orderItems, isPaid, totalPrice} = item
+  const {shippingDetails, orderItems, totalPrice} = item
 
     return (
       <List.Item style={{ border: "1px solid #eaeaea", padding: "1rem" }}>

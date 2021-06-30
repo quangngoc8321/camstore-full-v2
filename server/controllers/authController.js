@@ -59,6 +59,12 @@ exports.register = async (req,res,next) =>{
                message: "Password must be at least 6 characters long"
            })
        }
+       if(!avatarBase64){
+        return res.status(400).json({
+            success: false,
+            message: "Avatar is required"
+        })
+       }
     //    Upload avatarBase64 to cloudinary to get url
        const result = await cloudinary.v2.uploader.upload(avatarBase64, {
         folder: "cameraStoreV2/user",
