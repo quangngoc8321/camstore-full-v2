@@ -8,7 +8,7 @@ const SearchBox = ({query, setQuery}) => {
     <Row justify="center" align="middle">
       <Col xs={24} xl={18}>
         <Title level={3} style={{ textAlign: "center", margin: "1rem 0" }}>
-          👋 What products are you interested in?
+          👋 What product are you interested in?
         </Title>
 
         <Search
