@@ -26,7 +26,7 @@ const ProductForm = ({ type = "Create Product", product = null, mutation, loadin
     : [],
   });
 
-
+  // const isDisable = state.fileList.length > 0 ? false : true;
   const handleCancel = () => setState({ ...state, previewVisible: false });
   const handlePreview = async (file) => {
     if (!file.url && !file.preview) {
@@ -57,8 +57,8 @@ const ProductForm = ({ type = "Create Product", product = null, mutation, loadin
       values.image = await getBase64(state.fileList[0].originFileObj);
     }
 
-    console.log(values);
     mutation.mutate(values);
+    // console.log(values);
   };
   return (
     <Row justify="center" align="middle">
@@ -75,12 +75,13 @@ const ProductForm = ({ type = "Create Product", product = null, mutation, loadin
             </Title>
             <Form size="large" name="product-form" 
             initialValues={{
-                name: product?.name || "this is product name 1",
+                name: product?.name || "aaa",
                 price: Number(product?.price) || 1000,
-                description: product?.description || "this is description",
-                image: "_",
+                description: product?.description || "aaa",
               }}
-              
+              onChange={()=> {
+
+              }}
               onFinish={onFinish}
               >
               <Form.Item
@@ -136,12 +137,25 @@ const ProductForm = ({ type = "Create Product", product = null, mutation, loadin
               <Form.Item
                 label="Image"
                 name="image"
+               validateTrigger={false}
                 rules={[
-                  {
-                    required: true,
-                  },
+                  
+                  ({ getFieldValue }) => ({
+                    validator(_, value) {
+                      if (state.fileList.length > 0) {
+                        return Promise.resolve();
+                      }
+
+                      return Promise.reject(
+                        new Error(
+                          "Image is required"
+                        )
+                      );
+                    },
+                  })
                 ]}
               >
+                
                 <div>
                   <Upload
                     multiple={false}
@@ -173,6 +187,7 @@ const ProductForm = ({ type = "Create Product", product = null, mutation, loadin
                     display: "flex",
                     direction: "column",
                     justifyContent: "center",
+                    marginTop:"1rem"
                   }}
                 >
                   <Button id="btn" htmlType="submit" loading={loading}>

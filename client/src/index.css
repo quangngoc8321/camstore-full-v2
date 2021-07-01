@@ -28,7 +28,12 @@ footer{
   margin-bottom: 1rem;
 }
 
-
+#btn:disabled{
+  background-color: #ccc;
+}
+#btn:disabled:hover{
+  background-color: #ccc;
+}
 #btn {
   background-color: var(--main-color);
   border: none;

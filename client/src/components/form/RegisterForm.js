@@ -45,8 +45,9 @@ const RegisterForm = () => {
   };
 
   const onFinish = async (values) => {
-      values.avatar = file && await getBase64(file);
+      values.avatar = await getBase64(file);
       register(values, redirect);
+ 
   }
   return (
     <Row justify="center" align="middle">
@@ -56,7 +57,7 @@ const RegisterForm = () => {
             <Title style={{ textAlign: "center" }} level={2}>
               Register
             </Title>
-            <Form size="large" name="basic" initialValues={{ avatar: "_" }}
+            <Form size="large" name="basic" 
               onFinish={onFinish}
             >
               <Form.Item
@@ -126,10 +127,22 @@ const RegisterForm = () => {
               <Form.Item
                 label="Avatar"
                 name="avatar"
+                validateTrigger={false}
                 rules={[
-                  {
-                    required: true,
-                  },
+                  
+                  ({ getFieldValue }) => ({
+                    validator(_, value) {
+                      if (fileList.length > 0) {
+                        return Promise.resolve();
+                      }
+
+                      return Promise.reject(
+                        new Error(
+                          "Avatar is required"
+                        )
+                      );
+                    },
+                  })
                 ]}
               >
                 <div>
@@ -155,6 +168,7 @@ const RegisterForm = () => {
                     display: "flex",
                     direction: "column",
                     justifyContent: "center",
+                    marginTop:'0.7rem'
                   }}
                 >
                   <Button id="btn" htmlType="submit" loading={loading}>
