@@ -27,8 +27,14 @@ const orderRoute = require("./routes/orderRoute");
 const app = express();
 
 // Middlwares
-app.use(helmet());
 
+app.use(helmet());
+app.use(helmet.contentSecurityPolicy({
+  useDefaults: true,
+  directives:{
+    "script-src": ["'self'", "https://onlinecamstore.herokuapp.com/"],
+  }
+}));
 app.use(cors({ origin: "https://onlinecamstore.herokuapp.com/" }));
 
 app.use((req, res, next) => {
