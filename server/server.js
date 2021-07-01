@@ -11,7 +11,7 @@ const cors = require("cors");
 const session = require("express-session");
 const MongoStore = require("connect-mongo");
 const helmet = require("helmet");
-
+const crypto = require('crypto');
 
 // Import middlewares
 const { ErrorHandler } = require("./middlewares/ErrorHandler");
@@ -27,14 +27,21 @@ const orderRoute = require("./routes/orderRoute");
 const app = express();
 
 // Middlwares
-
 app.use(helmet());
-app.use(helmet.contentSecurityPolicy({
-  useDefaults: true,
-  directives:{
-    "script-src": ["'self'", "https://onlinecamstore.herokuapp.com/"],
-  }
-}));
+app.use((req, res, next) => {
+  res.locals.cspNonce = crypto.randomBytes(16).toString("hex");
+  next();
+});
+app.use(
+  helmet.contentSecurityPolicy({
+    useDefaults: true,
+    directives: {
+      scriptSrc: ["'self'", (req, res) => `'nonce-${res.locals.cspNonce}'`],
+    },
+  })
+);
+
+
 app.use(cors({ origin: "https://onlinecamstore.herokuapp.com/" }));
 
 app.use((req, res, next) => {
