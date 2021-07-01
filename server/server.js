@@ -28,15 +28,12 @@ const app = express();
 
 // Middlwares
 app.use(helmet());
-app.use((req, res, next) => {
-  res.locals.cspNonce = crypto.randomBytes(16).toString("hex");
-  next();
-});
+
 app.use(
   helmet.contentSecurityPolicy({
     useDefaults: true,
     directives: {
-      scriptSrc: ["'self'", (req, res) => `'nonce-${res.locals.cspNonce}'`],
+      scriptSrc: ["'self'", "unsafe-inline"],
     },
   })
 );
