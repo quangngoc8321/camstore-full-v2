@@ -10,8 +10,7 @@ const path = require("path");
 const cors = require("cors");
 const session = require("express-session");
 const MongoStore = require("connect-mongo");
-const helmet = require("helmet");
-const crypto = require('crypto');
+
 
 // Import middlewares
 const { ErrorHandler } = require("./middlewares/ErrorHandler");
@@ -27,20 +26,7 @@ const orderRoute = require("./routes/orderRoute");
 const app = express();
 
 // Middlwares
-app.use(helmet());
-
-app.use(
-  helmet.contentSecurityPolicy({
-    useDefaults: true,
-    directives: {
-      scriptSrc: ["'self'", "unsafe-inline"],
-    },
-  })
-);
-
-
 app.use(cors({ origin: "https://onlinecamstore.herokuapp.com/" }));
-
 app.use((req, res, next) => {
   if (req.originalUrl === "/api/v1/orders/webhook") {
     next();
