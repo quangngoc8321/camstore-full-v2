@@ -11,7 +11,9 @@ const ListContainer = ({path="/products", type="products"}) => {
     const token = localStorage.getItem("token"); 
 
     const {query, setQuery} = useContext(MyQueryContext)
-    const { isLoading, data } = useQuery([type, query], () => axiosFunction(token, null, path, "get",query));
+    const { isLoading, data } = useQuery([type, query], () => axiosFunction(token, null, path, "get",query),{
+      staleTime: 100000
+    });
 
     const datas = data?.data[type] || [];
     return (

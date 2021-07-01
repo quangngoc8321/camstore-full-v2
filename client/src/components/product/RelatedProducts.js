@@ -17,7 +17,9 @@ const RelatedProducts = () => {
   };
   const { isLoading, data } = useQuery(["related-products", slug], () =>
     fetchProducts(slug)
-  );
+  ,{
+    staleTime: 100000
+  });
   if (isLoading) {
     return null;
   }

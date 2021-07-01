@@ -10,7 +10,9 @@ const CartContextProvider = ({children}) => {
 
       const { isLoading, data } = useQuery(["cart", query], () =>
            axiosFunction(null,null,"/cart","get",query)
-      );
+      , {
+          staleTime: 100000
+      });
 
     return (
         <CartContext.Provider value={{isLoading, data, query, setQuery }}>

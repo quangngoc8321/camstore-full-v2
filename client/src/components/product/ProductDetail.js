@@ -10,7 +10,9 @@ import RelatedProducts from "./RelatedProducts";
 const { Title } = Typography;
 const ProductDetail = () => {
   let {slug} = useParams();
-  const { isLoading, data } = useQuery(["product", slug], ()=> axiosFunction(null,null,`/products/${slug}`,"get"))
+  const { isLoading, data } = useQuery(["product", slug], ()=> axiosFunction(null,null,`/products/${slug}`,"get"),{
+    staleTime: 100000
+  })
     if(isLoading){
         return <Spin size="large" />;
     }

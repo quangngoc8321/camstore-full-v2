@@ -7,7 +7,9 @@ import SearchBox from './SearchBox'
 
 const ProductContainer = () => {
     const {query, setQuery}  = useContext(MyQueryContext);
-     const { isLoading, data } = useQuery(["products", query], () => axiosFunction(null, null, "/products", "get",query));
+     const { isLoading, data } = useQuery(["products", query], () => axiosFunction(null, null, "/products", "get",query),{
+         staleTime: 100000
+    } );
 
     const datas = data?.data.products || [];
     return (
