@@ -1,4 +1,4 @@
-# MERN Online Camera Web App
+# 📷 MERN Online Camera Web App
 ## Tech
 - Ant Design UI 
 - Reactjs
@@ -8,6 +8,8 @@
 - Stripe Payment
 ## Main Features:
 - List/Search Product
+- Pagination
+- Review
 - Cart
 - Checkout
 - Login/Register
@@ -16,3 +18,8 @@
 - Manage Orders
 ## Demo
 Link: https://onlinecamstore.herokuapp.com
+## Note
+It might take about 15-20 seconds to [warm up the Heroku Server](https://blog.heroku.com/app_sleeping_on_heroku) since I use the Free Tier.  
+
+![Demo](https://res.cloudinary.com/dkalgpanl/image/upload/v1627158094/demo2_kdtcoa.jpg)
+
