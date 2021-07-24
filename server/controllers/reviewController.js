@@ -46,7 +46,6 @@ exports.createOneReview = async (req, res, next) => {
 
     const {ratingAvg, totalReviews} = caculateReview[0];
     await Product.findByIdAndUpdate(productId,{ratingAvg,totalReviews},{new: true} );
-
     res.status(200).json({
       success: true,
       review,
