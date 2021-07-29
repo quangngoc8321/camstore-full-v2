@@ -1,5 +1,5 @@
 # 📷 MERN Online Camera Web App
-## Tech
+## Tech Stacks
 - Ant Design UI 
 - Reactjs
 - React-Query
